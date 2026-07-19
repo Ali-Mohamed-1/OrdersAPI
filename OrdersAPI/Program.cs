@@ -1,18 +1,19 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using OrdersAPI.Filters;
 using OrdersAPI.Middlewares;
 using OrdersAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidateModelFilter>();
+});
 
-builder.Services.AddControllers();
-
-// Add fluent validation services
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<OrderItemValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

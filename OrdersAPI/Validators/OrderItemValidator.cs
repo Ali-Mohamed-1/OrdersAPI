@@ -11,7 +11,7 @@ namespace OrdersAPI.Validators
                 .NotNull()
                 .WithMessage("Item quantity cannot be null")
                 .GreaterThan(0)
-                .WithMessage("Item quantity must be greater than 0")
+                .WithMessage("Item quantity must be greater than 0");
         }
     }
 }
