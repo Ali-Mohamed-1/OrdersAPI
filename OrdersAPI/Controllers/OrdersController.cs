@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OrdersAPI.Models;
 
 namespace OrdersAPI.Controllers
@@ -16,7 +15,6 @@ namespace OrdersAPI.Controllers
             return Ok(_orders);
         }
 
-
         [HttpGet("{id}")]
         public IActionResult GetOrderById([FromRoute] int id)
         {
@@ -31,11 +29,6 @@ namespace OrdersAPI.Controllers
         [HttpPost]
         public IActionResult CreateOrder([FromBody] CreateOrderRequest request)
         {
-            if (request == null || request.orderItems == null || request.orderItems.Any() == false)
-            {
-                return BadRequest("Invalid order request.");
-            }
-
             var order = new
             {
                 OrderId = _orders.Count + 1,
