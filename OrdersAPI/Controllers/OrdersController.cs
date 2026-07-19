@@ -16,6 +16,18 @@ namespace OrdersAPI.Controllers
             return Ok(_orders);
         }
 
+
+        [HttpGet("{id}")]
+        public IActionResult GetOrderById([FromRoute] int id)
+        {
+            var order = _orders.FirstOrDefault(order => ((dynamic)order).OrderId == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order);
+        }
+
         [HttpPost]
         public IActionResult CreateOrder([FromBody] CreateOrderRequest request)
         {
