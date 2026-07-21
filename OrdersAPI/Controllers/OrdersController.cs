@@ -18,6 +18,11 @@ namespace OrdersAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetOrderById([FromRoute] int id)
         {
+            if (id < 0)
+            {
+                return BadRequest("Order ID must be a non-negative integer.");
+            }
+
             var order = _orders.FirstOrDefault(order => ((dynamic)order).OrderId == id);
             if (order == null)
             {
@@ -37,7 +42,7 @@ namespace OrdersAPI.Controllers
 
             _orders.Add(order);
 
-            return Ok(order);
+            return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
         }
     }
 }
