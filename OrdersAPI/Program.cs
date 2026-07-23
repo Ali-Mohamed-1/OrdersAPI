@@ -3,6 +3,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OrdersAPI.Filters;
 using OrdersAPI.Middlewares;
+using OrdersAPI.Services;
+using OrdersAPI.Services.Contracts;
 using OrdersAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +43,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddCors(options =>
 {

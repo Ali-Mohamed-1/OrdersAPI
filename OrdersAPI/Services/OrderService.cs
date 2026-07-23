@@ -1,8 +1,9 @@
 ﻿using OrdersAPI.Models;
+using OrdersAPI.Services.Contracts;
 
 namespace OrdersAPI.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private static List<object> _orders = new List<object>();
         
@@ -20,19 +21,19 @@ namespace OrdersAPI.Services
             return _orders.FirstOrDefault(order => ((dynamic)order).OrderId == id);
         }
 
-        public object CreateOrder(List<OrderItem> orderItems)
+        public object CreateOrder(CreateOrderRequest request)
         {
-            if (orderItems.Count > 10)
+            if (request.orderItems.Count > 10)
             {
                 throw new ArgumentException("You cannot order more than 10 items in a single order.");
             }
 
-            decimal totalPrice = orderItems.Sum(item => item.price * item.quantity);
+            decimal totalPrice = request.orderItems.Sum(item => item.price * item.quantity);
 
             var order = new
             {
                 OrderId = _orders.Count + 1,
-                Items = orderItems,
+                Items = request.orderItems,
                 TotalPrice = totalPrice
             };
 

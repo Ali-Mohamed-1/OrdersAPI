@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OrdersAPI.Models;
 using OrdersAPI.Services;
+using OrdersAPI.Services.Contracts;
 
 namespace OrdersAPI.Controllers
 {
@@ -8,7 +9,11 @@ namespace OrdersAPI.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly OrderService _orderService = new OrderService();
+        private readonly IOrderService _orderService;
+        public OrdersController(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
 
         [HttpGet]
         public IActionResult GetOrders()
@@ -41,7 +46,7 @@ namespace OrdersAPI.Controllers
         {
             try
             {
-                var order = _orderService.CreateOrder(request.orderItems);
+                var order = _orderService.CreateOrder(request);
                 return CreatedAtAction(nameof(GetOrderById), new { id = ((dynamic)order).OrderId }, order);
             }
             catch (ArgumentException ex)
